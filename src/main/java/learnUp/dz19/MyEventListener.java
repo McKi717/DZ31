@@ -6,14 +6,19 @@ import java.util.Locale;
 
 public class MyEventListener implements ApplicationListener<MyEvent> {
 
+    private final int a = 0;
+    private final int b = 1000;
+    private final int randomNum = a + (int) (Math.random() * b);
+
+
     @Override
     public void onApplicationEvent(MyEvent event) {
-        if (event.ourNum < event.getRandomNum()) {
+        if (event.ourNum < randomNum) {
             System.out.println(Main.context.getMessage("4", null, Locale.US));
-        } else if (event.ourNum > event.getRandomNum()) {
+        } else if (event.ourNum > randomNum) {
             System.out.println(Main.context.getMessage("3", null, Locale.US));
         } else {
-            System.out.println(Main.context.getMessage("5"+ event.getRandomNum(), new Object[] {event.getRandomNum()}, Locale.US));
+            System.out.println(Main.context.getMessage("5"+ randomNum, new Object[] {randomNum}, Locale.US));
         }
     }
 }
