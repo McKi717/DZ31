@@ -14,11 +14,11 @@ public class MyEventListener implements ApplicationListener<MyEvent> {
     @Override
     public void onApplicationEvent(MyEvent event) {
         if (event.ourNum < randomNum) {
-            System.out.println(Main.context.getMessage("4", null, Locale.US));
+            System.out.println(Main.rBM.getMessage("3", null, Locale.US));
         } else if (event.ourNum > randomNum) {
-            System.out.println(Main.context.getMessage("3", null, Locale.US));
+            System.out.println(Main.rBM.getMessage("4", null, Locale.US));
         } else {
-            System.out.println(Main.context.getMessage("5"+ randomNum, new Object[] {randomNum}, Locale.US));
+            System.out.println(Main.rBM.getMessage("5"+ randomNum, new Object[] {randomNum}, Locale.US));
         }
     }
 }
