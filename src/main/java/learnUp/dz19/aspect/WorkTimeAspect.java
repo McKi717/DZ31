@@ -16,24 +16,24 @@ public class WorkTimeAspect {
 
     private static  final Logger log = LoggerFactory.getLogger(WorkTimeAspect.class);
 
-  @After("@annotation(learnUp.dz19.annotation.WorkTime)")
-    public Object workTime(JoinPoint joinPoint) {
+  @Around("@annotation(learnUp.dz19.annotation.WorkTime)")
+    public Object workTime(ProceedingJoinPoint joinPoint) throws Throwable {
         String name = joinPoint.getSignature().getName();
-        long start = System.currentTimeMillis();
-        Object proceed = joinPoint.getTarget();
-        long workTimes = System.currentTimeMillis() - start;
+        final long start = System.currentTimeMillis();
+       final Object proceed = joinPoint.proceed();
+        final long workTimes = System.currentTimeMillis() - start;
 
-        System.out.println(joinPoint.getSignature() + "Время работы метода" + start + " равно" +  workTimes + " мс");
+        System.out.println(joinPoint.getSignature() + "Время работы метода " + name + " равно " +  workTimes + " мс");
 
         return proceed;
     }
 
     @AfterReturning(("@annotation(learnUp.dz19.annotation.LogMethod)"))
             public void logMethod (JoinPoint joinPoint){
-      log.info("{имя метода}", joinPoint.getSignature().getName());
-      log.info("{параметры метода}", joinPoint.getArgs());
+      log.info("{}", joinPoint.getSignature().getName());
+      log.info("{}", joinPoint.getArgs());
         Signature signature = joinPoint.getSignature();
-      log.info("{возвращаемое значение}", ((MethodSignature) signature).getReturnType());
+      log.info("{}", ((MethodSignature) signature).getReturnType());
             }
 
 }

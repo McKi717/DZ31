@@ -1,14 +1,16 @@
+package learnUp.dz19;
+
 import learnUp.dz19.annotation.LogMethod;
 import learnUp.dz19.annotation.WorkTime;
-
 import org.springframework.stereotype.Service;
 
 @Service
 public class Primers {
 
     @WorkTime
-    public void workTime() throws InterruptedException {
+    public String workTime() throws InterruptedException {
         Thread.sleep(3000);
+        return null;
     }
 
     @LogMethod
