@@ -20,8 +20,9 @@ public class Book {
     @Column
     private String nameBook;
 
-    @Column
-    private Long idAuthor;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId
+    private Author author;
 
     @Column
     private int releaseYear;

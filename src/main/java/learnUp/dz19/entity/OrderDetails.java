@@ -18,11 +18,13 @@ public class OrderDetails {
     @Id
     private Long id;
 
-    @Column
-    private long idOrders;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId
+    private Orders order;
 
-    @Column
-    private long idBooks;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId
+    private Book book;
 
     @Column
     private int quantity;
