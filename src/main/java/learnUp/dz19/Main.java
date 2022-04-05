@@ -1,18 +1,11 @@
 package learnUp.dz19;
 
-import learnUp.dz19.dao.Book;
-import learnUp.dz19.dao.BookDao;
+import learnUp.dz19.service.author.AuthorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 /*@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})*/
@@ -29,5 +22,7 @@ public class Main {
         log.info("{}", primers.logMethod(1));
         log.info(primers.workTime());
 
-    }
+        AuthorService authorService = context.getBean(AuthorService.class);
+        log.info("Authors: {}", authorService.getAuthor());
+        }
 }

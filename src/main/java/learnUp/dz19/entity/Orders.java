@@ -17,8 +17,9 @@ public class Orders {
     @GeneratedValue
     private Long id;
 
-    @Column
-    private long idBuyers;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId
+    private Buyer buyers;
 
     @Column
     private float amountBuy;
