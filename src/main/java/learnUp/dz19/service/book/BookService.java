@@ -2,6 +2,7 @@ package learnUp.dz19.service.book;
 
 import learnUp.dz19.entity.Book;
 import learnUp.dz19.repository.BookRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public class BookService {
     }
 
     public List<Book> getBook(){return bookRepository.findAll();}
+
+    public List<Book> getBooksByNameAuthor(String author){
+        return  bookRepository.findBookByAuthor(author);
+    }
 }

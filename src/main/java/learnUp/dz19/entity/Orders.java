@@ -25,7 +25,7 @@ public class Orders {
     private float amountBuy;
 
     @ManyToOne
-    @JoinColumn(name = "orders_id")
+    @JoinColumn(name = "orders")
     @Fetch(FetchMode.JOIN)
     private OrderDetails orderDetails;
 

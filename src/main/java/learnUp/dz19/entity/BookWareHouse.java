@@ -21,7 +21,7 @@ public class BookWareHouse {
     @Column
     private int remainder;
 
-    @OneToMany(mappedBy = "bookWareHouse", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bookWareHouse_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Fetch(FetchMode.JOIN)
     private Set<Book> books;
