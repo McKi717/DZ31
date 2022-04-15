@@ -1,14 +1,12 @@
 package learnUp.dz19.entity;
 
 import lombok.Data;
-import lombok.ToString;
-import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.List;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -17,11 +15,20 @@ import org.hibernate.annotations.FetchMode;
 @Data
 public class Book {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
     private String nameBook;
+
+    public Book(String nameBook, Author author, int releaseYear, int pages, float price, BookWareHouse bookWareHouse) {
+        this.nameBook = nameBook;
+        this.author = author;
+        this.releaseYear = releaseYear;
+        this.pages = pages;
+        this.price = price;
+        this.bookRemainder = bookWareHouse;
+    }
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -38,12 +45,16 @@ public class Book {
     private float price;
 
     @ManyToOne
-    @JoinColumn(name = "booksFromBookWareHouse")
+    @JoinColumn(name = "booksRemainder")
     @Fetch(FetchMode.JOIN)
-    private BookWareHouse bookWareHouse_id;
+    private BookWareHouse bookRemainder;
 
     @ManyToOne
-    @JoinColumn(name = "booksOrderDetails_id")
+    @JoinColumn(name = "booksFromOrDetails")
     @Fetch(FetchMode.JOIN)
-    private OrderDetails booksOrderDetails;
+    private OrderDetails order_details;
+
+    public Book() {
+
+    }
 }

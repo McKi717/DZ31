@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 public class Buyer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -21,8 +21,7 @@ public class Buyer {
     @Column
     private Date birthDay;
 
-    @ManyToOne
-    @JoinColumn(name = "buyerOrder_id")
-    @Fetch(FetchMode.JOIN)
-    private Orders buyerOrder;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "orders_id")
+    private Orders orders;
 }

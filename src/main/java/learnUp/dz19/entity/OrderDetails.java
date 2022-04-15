@@ -16,15 +16,8 @@ import java.util.Set;
 @Data
 public class OrderDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId
-    private Orders order;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId
-    private Book book;
 
     @Column
     private int quantity;
@@ -32,14 +25,13 @@ public class OrderDetails {
     @Column
     private int price;
 
-    @OneToMany(mappedBy = "orderDetails", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Fetch(FetchMode.JOIN)
-    private Set<Orders> orders;
+    @OneToOne(mappedBy = "order_details")
+    private Orders orders;
 
-    @OneToMany(mappedBy = "booksOrderDetails", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order_details", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Fetch(FetchMode.JOIN)
-    private Set<Book> books;
+    private List<Book> books;
+
 
 }

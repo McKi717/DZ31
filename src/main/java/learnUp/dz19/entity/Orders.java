@@ -14,24 +14,16 @@ import java.util.List;
 @Data
 public class Orders {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId
-    private Buyer buyers;
 
     @Column
     private float amountBuy;
 
-    @ManyToOne
-    @JoinColumn(name = "orders")
-    @Fetch(FetchMode.JOIN)
-    private OrderDetails orderDetails;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_deatails_id")
+    private OrderDetails order_details;
 
-    @OneToMany(mappedBy = "buyerOrder", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Fetch(FetchMode.JOIN)
-    private List<Buyer> buyerList;
-
+    @OneToOne(mappedBy = "orders")
+    private Buyer buyer;
 }
