@@ -1,15 +1,15 @@
 package learnUp.dz19.entity;
 
-import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="buyer")
-@Data
+@Getter
+@Setter
+@ToString
 public class Buyer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,9 @@ public class Buyer {
 
     @Column
     private Date birthDay;
+
+    @Version
+    public Long version;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "orders_id")

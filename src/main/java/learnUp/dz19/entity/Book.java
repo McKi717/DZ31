@@ -1,9 +1,9 @@
 package learnUp.dz19.entity;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.*;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -12,8 +12,12 @@ import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name="book")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +25,10 @@ public class Book {
     @Column
     private String nameBook;
 
-    public Book(String nameBook, Author author, int releaseYear, int pages, float price, BookWareHouse bookWareHouse) {
+    @Version
+    public Long version;
+
+    public Book(String nameBook, Author author, int releaseYear, int pages, int price, BookWareHouse bookWareHouse) {
         this.nameBook = nameBook;
         this.author = author;
         this.releaseYear = releaseYear;
@@ -42,7 +49,7 @@ public class Book {
     private int pages;
 
     @Column
-    private float price;
+    private int price;
 
     @ManyToOne
     @JoinColumn(name = "booksRemainder")
@@ -52,9 +59,8 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "booksFromOrDetails")
     @Fetch(FetchMode.JOIN)
+    @ToString.Exclude
+    @JsonIgnore
     private OrderDetails order_details;
 
-    public Book() {
-
-    }
 }

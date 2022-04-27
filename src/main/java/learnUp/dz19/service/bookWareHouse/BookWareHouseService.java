@@ -21,5 +21,6 @@ public class BookWareHouseService {
 
     public BookWareHouse getBHWById(Long id){return bookWareHouseRepository.findBWHbyId(id);}
 
+    public void updateBookWH (BookWareHouse bookWareHouse) {bookWareHouseRepository.save(bookWareHouse);}
 
 }

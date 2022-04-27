@@ -50,7 +50,7 @@
     <br>
     <h1>Книги:</h1>
 
-<table class="table">
+<table class="table table-hover">
     <thead class="thead-dark">
     <tr>
         <th th:text="'NameBook'"></th>
@@ -59,16 +59,18 @@
         <th th:text="'Pages'"></th>
         <th th:text="'Price'"></th>
         <th th:text="'Count'"></th>
+        <th th:text="''"></th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book: ${books}">
-        <td th:text="${book.getNameBook()}"></td>
-        <td th:text="${book.getAuthor().getFullName()}"></td>
-        <td th:text="${book.getReleaseYear()}"></td>
-        <td th:text="${book.getPages()}"></td>
-        <td th:text="${book.getPrice()}"></td>
-        <td th:text="${book.getBookRemainder().getRemainder()}"></td>
+<!--    <tr th:each="book: ${books}">-->
+<!--        <td th:text="${book.getNameBook()}"></td>-->
+<!--        <td th:text="${book.getAuthor().getFullName()}"></td>-->
+<!--        <td th:text="${book.getReleaseYear()}"></td>-->
+<!--        <td th:text="${book.getPages()}"></td>-->
+<!--        <td th:text="${book.getPrice()}"></td>-->
+<!--        <td th:text="${book.getBookRemainder().getRemainder()}"></td>-->
+        <td> <button type="button" class="btn btn-primary">Primary</button> </td>
     </tr>
     </tbody>
 </table>

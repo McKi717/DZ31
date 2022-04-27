@@ -1,11 +1,9 @@
 package learnUp.dz19.repository;
 
-import learnUp.dz19.entity.Author;
 import learnUp.dz19.entity.Book;
-import learnUp.dz19.entity.BookWareHouse;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +19,5 @@ public interface BookRepository extends JpaRepository<Book, Long>{
    @Query(value = "from Book a where a.id = :id")
    public Book findBookById(Long id);
 
+   List<Book> findAll (Specification<Book> specification);
 }

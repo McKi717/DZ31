@@ -1,4 +1,4 @@
-package learnUp.dz19.orders;
+package learnUp.dz19.service.orders;
 
 import learnUp.dz19.entity.Orders;
 import learnUp.dz19.repository.OrdersRepository;
