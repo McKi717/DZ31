@@ -15,7 +15,7 @@ import org.hibernate.annotations.FetchMode;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Book {
 
     @Id
@@ -25,6 +25,7 @@ public class Book {
     @Column
     private String nameBook;
 
+    @JsonIgnore
     @Version
     public Long version;
 
@@ -37,7 +38,7 @@ public class Book {
         this.bookRemainder = bookWareHouse;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
     @Fetch(FetchMode.JOIN)
     private Author author;
@@ -51,7 +52,7 @@ public class Book {
     @Column
     private int price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "booksRemainder")
     @Fetch(FetchMode.JOIN)
     private BookWareHouse bookRemainder;

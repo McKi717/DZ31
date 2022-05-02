@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static org.apache.coyote.http11.Constants.a;
 
 @Service
 @Slf4j
@@ -56,7 +55,6 @@ public class OrderDetailsService {
         try {
             int price = orderDetails.getPrice();
             int quant = orderDetails.getQuantity();
-            boolean a = false;
 
             Set<Book> books = orderDetails.getBooks();
 
@@ -93,7 +91,6 @@ public class OrderDetailsService {
         }
     }
 
-    @Transactional
     @Lock(value = LockModeType.OPTIMISTIC)
     public void addBooksByOrdersDetails (OrderDetails orderDetails, Book book){
         try {
@@ -101,6 +98,11 @@ public class OrderDetailsService {
             int quant = orderDetails.getQuantity();
 
             Set<Book> books = orderDetails.getBooks();
+
+            if(book.getBookRemainder()==null){
+                BookWareHouse bookWareHouse = new BookWareHouse();
+                book.setBookRemainder(bookWareHouse);
+            }
 
             if(book.getBookRemainder().getRemainder()>0){
                 books.add(book);
@@ -142,8 +144,8 @@ public class OrderDetailsService {
             }
     }
 
-    @Transactional
-    @Lock(value = LockModeType.OPTIMISTIC)
+//    @Transactional
+//    @Lock(value = LockModeType.OPTIMISTIC)
     public void updateOrderDetails(OrderDetails orderDetails){
         try {
             orderDetailsRepository.save(orderDetails);
@@ -154,24 +156,25 @@ public class OrderDetailsService {
         }
     }
 
+
     @Transactional
     @Lock(value= LockModeType.OPTIMISTIC)
     public Boolean delete(Long id) {
-        try{
-            OrderDetails orderDetails = orderDetailsRepository.findOrderDetailsById(id);
+    try{OrderDetails orderDetails = orderDetailsRepository.findOrderDetailsById(id);
 
-            Set<Book> books = orderDetails.getBooks();
+    Set<Book> books = orderDetails.getBooks();
 
-            for (Book b: books
-                 ) {
-                BookWareHouse bookWareHouse = b.getBookRemainder();
-                bookWareHouse.setRemainder(bookWareHouse.getRemainder()+1);
-                b.setBookRemainder(bookWareHouse);
-                bookWareHouseRepository.save(bookWareHouse);
-            }
+    for (Book b: books
+    ) {
+        BookWareHouse bookWareHouse = b.getBookRemainder();
+        bookWareHouse.setRemainder(bookWareHouse.getRemainder()+1);
+        b.setBookRemainder(bookWareHouse);
+        bookWareHouseRepository.save(bookWareHouse);
+    }
 
-            orderDetailsRepository.delete(orderDetails);
-            return true;}
+    orderDetailsRepository.delete(orderDetails);
+    return true;}
+
         catch (OptimisticLockException e){
             log.warn("Optimistick lock for book delete with id " + id);
             throw e;

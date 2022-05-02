@@ -1,17 +1,22 @@
 package learnUp.dz19.service.book;
 
 import learnUp.dz19.dao.book.BookFilter;
+import learnUp.dz19.entity.Author;
 import learnUp.dz19.entity.Book;
 import learnUp.dz19.entity.BookWareHouse;
-import learnUp.dz19.entity.BookWareHouse;
+import learnUp.dz19.repository.AuthorRepository;
 import learnUp.dz19.repository.BookRepository;
 import learnUp.dz19.repository.BookWareHouseRepository;
+import learnUp.dz19.service.author.AuthorService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
 import java.util.List;
@@ -27,9 +32,13 @@ public class BookService {
 
     private final BookWareHouseRepository bookWareHouseRepository;
 
-    public BookService(BookRepository bookRepository, BookWareHouseRepository bookWareHouseRepository) {
+    private final AuthorRepository authorRepository;
+
+
+    public BookService(BookRepository bookRepository, BookWareHouseRepository bookWareHouseRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.bookWareHouseRepository = bookWareHouseRepository;
+        this.authorRepository = authorRepository;
     }
 
     public List<Book> getAllBooks()
@@ -44,6 +53,8 @@ public class BookService {
     @Lock(value = LockModeType.OPTIMISTIC)
     public void updateBook(Book book){
         try {
+            authorRepository.save(book.getAuthor());
+            bookWareHouseRepository.save(book.getBookRemainder());
             bookRepository.save(book);
         }
         catch (OptimisticLockException e){
@@ -54,6 +65,10 @@ public class BookService {
 
     @Transactional
     public Book addBook (Book book){
+        if(book.getAuthor()==null){
+            throw new EntityExistsException("Поле автор не может быть пустым");
+        }
+
         for (Book b: getAllBooks()
              ) {if(b.getNameBook().equals(book.getNameBook()))
              {
@@ -65,10 +80,19 @@ public class BookService {
                  return null;
              }
         }
-        BookWareHouse bookWareHouse = new BookWareHouse();
-        bookWareHouse.setRemainder(bookWareHouse.getRemainder()+1);
-        book.setBookRemainder(bookWareHouse);
-        bookWareHouseRepository.save(book.getBookRemainder());
+        if(book.getBookRemainder()==null){
+            BookWareHouse bookWareHouse = new BookWareHouse();
+            bookWareHouse.setRemainder(bookWareHouse.getRemainder()+1);
+            book.setBookRemainder(bookWareHouse);
+            bookWareHouseRepository.save(book.getBookRemainder());}
+        else{
+            BookWareHouse bookWareHouse = book.getBookRemainder();
+            bookWareHouse.setRemainder(bookWareHouse.getRemainder() + 1);
+            book.setBookRemainder(bookWareHouse);
+            updateBook(book);
+            bookWareHouseRepository.save(book.getBookRemainder());
+        }
+
        return bookRepository.save(book);
     }
 

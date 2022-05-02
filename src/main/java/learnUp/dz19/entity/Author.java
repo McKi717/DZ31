@@ -12,7 +12,7 @@ import java.util.Set;
 @Table (name = "author")
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @ToString
 public class Author {
     @Id
@@ -22,6 +22,7 @@ public class Author {
     @Column
     private String fullName;
 
+    @JsonIgnore
     @Version
     public Long version;
 

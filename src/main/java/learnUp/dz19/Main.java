@@ -14,11 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
 
 @SpringBootApplication
 public class Main {
@@ -29,6 +30,27 @@ public class Main {
 
         ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
 
+//        OrderDetailsService orderDetailsService = context.getBean(OrderDetailsService.class);
+//        OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(4L);
+////
+//        BookService bookService = context.getBean(BookService.class);
+//        Book book = bookService.findBookById(23L);
+////
+////
+//        orderDetailsService.BuyBooksByOrdersDetails(orderDetails, book);
+//        log.info("{}", orderDetails);
+
+//        RoleRepository roleRepository = context.getBean(RoleRepository.class);
+////        Role role = roleRepository.findByName("ADMIN");
+//        Role role = new Role();
+//       UserService userService = context.getBean(UserService.class);
+////       User user = userService.loadUserByUsername("Grey");
+//        log.info("{}", user);
+
+
+
+//        Role role = roleRepository.findByName("ADMIN");
+//        log.info("{}", role);
 
         }
 

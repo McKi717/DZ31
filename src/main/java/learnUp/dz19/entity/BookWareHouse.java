@@ -27,6 +27,7 @@ public class BookWareHouse {
     @JsonIgnore
     private Set<Book> books;
 
+    @JsonIgnore
     @Version
     public Long version;
 

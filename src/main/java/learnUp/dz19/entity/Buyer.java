@@ -1,5 +1,6 @@
 package learnUp.dz19.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 public class Buyer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +23,7 @@ public class Buyer {
     @Column
     private Date birthDay;
 
+    @JsonIgnore
     @Version
     public Long version;
 
