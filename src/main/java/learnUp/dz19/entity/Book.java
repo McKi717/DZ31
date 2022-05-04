@@ -38,7 +38,7 @@ public class Book {
         this.bookRemainder = bookWareHouse;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "author_id")
     @Fetch(FetchMode.JOIN)
     private Author author;

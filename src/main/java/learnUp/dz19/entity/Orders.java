@@ -23,10 +23,10 @@ public class Orders {
     @Version
     public Long version;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_deatails_id")
     private OrderDetails order_detailss;
 
-    @OneToOne(mappedBy = "orders")
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     private Buyer buyer;
 }

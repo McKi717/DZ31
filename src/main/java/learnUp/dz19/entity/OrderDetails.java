@@ -34,16 +34,19 @@ public class OrderDetails {
     @Column
     private Integer price;
 
-    @OneToOne(mappedBy = "order_detailss")
+    @JsonIgnore
+    @OneToOne(mappedBy = "order_detailss", cascade = CascadeType.ALL)
     private Orders orders;
 
     @JsonIgnore
     @Version
     public Long version;
 
-    @OneToMany(mappedBy = "order_details", fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Fetch(FetchMode.JOIN)
+    @OneToMany(mappedBy = "order_details", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Book> books;
 
+    public void removeBook(Book book){
+        books.remove(book);
+        book.setOrder_details(null);
+    }
 }

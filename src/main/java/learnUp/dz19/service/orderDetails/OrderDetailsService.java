@@ -1,13 +1,12 @@
 package learnUp.dz19.service.orderDetails;
 
-import learnUp.dz19.entity.Book;
-import learnUp.dz19.entity.BookWareHouse;
-import learnUp.dz19.entity.OrderDetails;
+import learnUp.dz19.entity.*;
+import learnUp.dz19.repository.AuthorRepository;
 import learnUp.dz19.repository.BookRepository;
 import learnUp.dz19.repository.BookWareHouseRepository;
 import learnUp.dz19.repository.OrderDetailsRepository;
+import learnUp.dz19.service.book.BookService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.criterion.Order;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityExistsException;
 import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,10 +29,13 @@ public class OrderDetailsService {
 
     private final BookWareHouseRepository bookWareHouseRepository;
 
-    public OrderDetailsService(OrderDetailsRepository orderDetailsRepository, BookRepository bookRepository, BookWareHouseRepository bookWareHouseRepository) {
+    private final BookService bookService;
+
+    public OrderDetailsService(OrderDetailsRepository orderDetailsRepository, BookRepository bookRepository, BookWareHouseRepository bookWareHouseRepository, BookService bookService) {
         this.orderDetailsRepository = orderDetailsRepository;
         this.bookRepository = bookRepository;
         this.bookWareHouseRepository = bookWareHouseRepository;
+        this.bookService = bookService;
     }
 
     public List<OrderDetails> getAllOrderDetails(){
@@ -45,7 +47,13 @@ public class OrderDetailsService {
     }
 
     public OrderDetails addOrdersDetails(OrderDetails orderDetails){
-
+        if(orderDetails.getOrders()==null){
+            Orders orders = new Orders();
+            Buyer buyer = new Buyer();
+            orders.setBuyer(buyer);
+            orders.setOrder_detailss(orderDetails);
+            orderDetails.setOrders(orders);
+        }
         return  orderDetailsRepository.save(orderDetails);
     }
 
@@ -56,12 +64,12 @@ public class OrderDetailsService {
             int price = orderDetails.getPrice();
             int quant = orderDetails.getQuantity();
 
-            Set<Book> books = orderDetails.getBooks();
+            orderDetails.removeBook(book);
 
-                books.remove(book);
                 quant -= 1;
                 price -= book.getPrice();
-
+                if(quant<0)quant=0;
+                if(price<0)price=0;
 
             if (book.getBookRemainder() != null) {
                 BookWareHouse bookWareHouse = book.getBookRemainder();
@@ -77,8 +85,6 @@ public class OrderDetailsService {
             }
 
             orderDetails.setQuantity(quant);
-            orderDetails.setBooks(books);
-            book.setOrder_details(orderDetails);
 
             orderDetails.setPrice(price);
 
@@ -91,6 +97,7 @@ public class OrderDetailsService {
         }
     }
 
+    @Transactional
     @Lock(value = LockModeType.OPTIMISTIC)
     public void addBooksByOrdersDetails (OrderDetails orderDetails, Book book){
         try {
