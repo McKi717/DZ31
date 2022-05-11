@@ -7,6 +7,7 @@ import learnUp.dz19.entity.BookWareHouse;
 import learnUp.dz19.service.author.AuthorService;
 import learnUp.dz19.service.book.BookService;
 import learnUp.dz19.service.bookWareHouse.BookWareHouseService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityExistsException;
@@ -47,12 +48,14 @@ public class booksController {
 
     @PostMapping("/books")
     @Transactional
+    @Secured("ROLE_ADMIN")
     public Book addBook(@RequestBody Book book){
         bookService.addBook(book);
         return book;
     }
 
     @DeleteMapping("/books/{id}")
+    @Secured("ROLE_ADMIN")
     public String deleteBook(@PathVariable Long id){
         bookService.delete(id);
         return "Книга с id =  " + id + " удалена";
@@ -60,6 +63,7 @@ public class booksController {
 
     @PutMapping("/books/{id}")
     @Transactional
+    @Secured("ROLE_ADMIN")
     public Book updateBook(@PathVariable Long id, @RequestBody Book book){
         Book book1 = bookService.findBookById(id);
         if(book1==null){throw new EntityExistsException("Нет такого id книги");}

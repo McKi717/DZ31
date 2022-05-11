@@ -5,6 +5,7 @@ import learnUp.dz19.entity.OrderDetails;
 import learnUp.dz19.service.book.BookService;
 import learnUp.dz19.service.orderDetails.OrderDetailsService;
 import org.aspectj.weaver.ast.Or;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,7 @@ public class OrdersDetailsControler {
 
     @PostMapping("/od/{id}/{book_id}")
     @Transactional
+    @PreAuthorize("#username == authentication.principal.username")
     public void addBookOnOD(@PathVariable("id") Long id, @PathVariable("book_id") Long bookId,
                             @RequestBody(required = false) OrderDetails orderDetails){
         OrderDetails orderDetails1 = orderDetailsService.getOrderDetailsById(id);
@@ -66,6 +68,7 @@ public class OrdersDetailsControler {
 
     @DeleteMapping("/od/{id}/delete/{book_id}")
     @Transactional
+    @PreAuthorize("#username == authentication.principal.username")
     public void deleteBookOnOD(@PathVariable("id") Long id, @PathVariable("book_id") Long bookId){
         OrderDetails orderDetails1 = orderDetailsService.getOrderDetailsById(id);
         Book book1 = bookService.findBookById(bookId);

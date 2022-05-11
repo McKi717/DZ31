@@ -7,6 +7,7 @@ import learnUp.dz19.entity.Orders;
 import learnUp.dz19.service.buyer.BuyerService;
 import learnUp.dz19.service.orderDetails.OrderDetailsService;
 import learnUp.dz19.service.orders.OrdersService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,6 +93,7 @@ public class OrdersController {
     }
 
     @DeleteMapping("/orders/{id}")
+    @PreAuthorize("#username == authentication.principal.username")
     public String deleteOrderDetails(@PathVariable Long id){
         Orders orders = ordersService.findOrderById(id);
         if(orders==null){

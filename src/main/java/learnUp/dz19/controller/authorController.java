@@ -4,6 +4,7 @@ import learnUp.dz19.dao.book.AuthorFilter;
 import learnUp.dz19.entity.Author;
 import learnUp.dz19.entity.Book;
 import learnUp.dz19.service.author.AuthorService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class authorController {
 
     @PostMapping("/author")
     @Transactional
+    @Secured("ROLE_ADMIN")
     public Author addAuthor(@RequestBody Author author) {
         if (author.getId() != null) {
             throw new EntityExistsException(
@@ -54,6 +56,7 @@ public class authorController {
 
     @PutMapping("/author/{id}")
     @Transactional
+    @Secured("ROLE_ADMIN")
     public Author updateAuthor(@PathVariable("id") Long id, @RequestBody Author author){
         Author author1 = getAuthorById(id);
         if(author1==null){
@@ -65,6 +68,7 @@ public class authorController {
 
     @DeleteMapping("/author/{id}")
     @Transactional
+    @Secured("ROLE_ADMIN")
     public String deleteAuthor(@PathVariable Long id){
         Author author1 = getAuthorById(id);
         if(author1==null){
